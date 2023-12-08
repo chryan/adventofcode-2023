@@ -1,20 +1,10 @@
-use std::fs::File;
-use std::io;
-use std::io::{BufReader, Lines};
-use std::io::prelude::*;
-use std::path::Path;
-
 const DAY1_INPUT_FILE: &str = "assets/day1_input.txt";
+
+use crate::common;
 
 struct Digit {
     value: u32,
     found_idx: usize,
-}
-
-fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-    where P: AsRef<Path>, {
-    let file = File::open(filename)?;
-    Ok(io::BufReader::new(file).lines())
 }
 
 fn parse_numeric_digits(digits_string: &String) -> Option<(Digit, Digit)> {
@@ -98,27 +88,25 @@ fn parse_string_digits(digits_string: &String) -> Option<(Digit, Digit)> {
 }
 
 pub fn run_part1() {
-    let lines = read_lines(DAY1_INPUT_FILE).unwrap();
+    let lines = common::read_lines(DAY1_INPUT_FILE).unwrap();
     let mut final_result: u32 = 0;
 
     for line in lines {
         let parse_line = line.unwrap();
 
         match parse_numeric_digits(&parse_line) {
-            None => { println!("{} has no digits!", parse_line); },
+            None => {},
             Some((first, second)) => {
                 let parsed_number = first.value * 10 + second.value;
-                println!("{}: {}", parsed_number, parse_line);
                 final_result += parsed_number;
             },
         }
     }
-
-    println!("Final result: {}", final_result);
+    println!("day1-run_part1: {}", final_result);
 }
 
 pub fn run_part2() {
-    let lines = read_lines(DAY1_INPUT_FILE).unwrap();
+    let lines = common::read_lines(DAY1_INPUT_FILE).unwrap();
     let mut final_result: u32 = 0;
 
     for line in lines {
@@ -157,12 +145,9 @@ pub fn run_part2() {
 
         if let (Some(first), Some(second)) = (first_digit, second_digit) {
             let parsed_number = first.value * 10 + second.value;
-            println!("{}: {}", parsed_number, parse_line);
             final_result += parsed_number;
-        } else {
-            println!("No number found for {}!", parse_line);
         }
     }
 
-    println!("Final result: {}", final_result);
+    println!("day1-run_part2: {}", final_result);
 }
